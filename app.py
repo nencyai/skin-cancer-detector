@@ -46,8 +46,13 @@ if uploaded_file:
     predicted_class = np.argmax(prediction)
     confidence = np.max(prediction)
 
-    if confidence < 0.70:
+    if confidence < 0.50:
         st.error("⚠️ Uncertain result. Please upload a clearer skin image.")
     else:
         st.markdown(f"### 🔍 Prediction: **{label_map[predicted_class]}**")
         st.markdown(f"Confidence: `{confidence:.2f}`")
+    
+   
+   
+   
+   
