@@ -42,12 +42,12 @@ if uploaded_file:
 
     # Predict
     raw_prediction = model.predict(img_input)
-    prediction = tf.nn.softmax(raw_prediction)  # Normalize output
+    prediction = tf.nn.softmax(raw_prediction)
     predicted_class = np.argmax(prediction)
     confidence = np.max(prediction)
 
-   if confidence < 0.70:
-    st.error("⚠️ Uncertain result. Please upload a clearer skin image.")
-   else:
-    st.markdown(f"### 🔍 Prediction: **{label_map[predicted_class]}**")
-    st.markdown(f"Confidence: `{confidence:.2f}`")
+    if confidence < 0.70:
+        st.error("⚠️ Uncertain result. Please upload a clearer skin image.")
+    else:
+        st.markdown(f"### 🔍 Prediction: **{label_map[predicted_class]}**")
+        st.markdown(f"Confidence: `{confidence:.2f}`")
