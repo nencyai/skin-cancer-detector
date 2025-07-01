@@ -5,7 +5,7 @@ import gdown
 from PIL import Image
 import os
 
-# Download model if not present
+# Download model if not already present
 MODEL_PATH = "skin_cancer_model.h5"
 if not os.path.exists(MODEL_PATH):
     file_id = "12feZzigKSdMMo1ienehOu-SUYpyNcgS2"
@@ -35,10 +35,12 @@ if uploaded_file:
     img = Image.open(uploaded_file).convert("RGB")
     st.image(img, caption='Uploaded Image', use_column_width=True)
 
+    # Resize using PIL (no OpenCV)
     img_resized = img.resize((224, 224))
     img_array = np.array(img_resized) / 255.0
-    img_input = np.expand_dims(img_resized, axis=0)
+    img_input = np.expand_dims(img_array, axis=0)
 
+    # Predict
     prediction = model.predict(img_input)
     predicted_class = np.argmax(prediction)
     confidence = np.max(prediction)
