@@ -33,9 +33,9 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg
 
 if uploaded_file:
     img = Image.open(uploaded_file).convert("RGB")
-    st.image(img, caption='Uploaded Image', use_column_width=True)
+    st.image(img, caption='Uploaded Image', use_container_width=True)
 
-    # Resize using PIL (no OpenCV)
+    # Resize using PIL
     img_resized = img.resize((224, 224))
     img_array = np.array(img_resized) / 255.0
     img_input = np.expand_dims(img_array, axis=0)
@@ -46,13 +46,9 @@ if uploaded_file:
     predicted_class = np.argmax(prediction)
     confidence = np.max(prediction)
 
-    if confidence < 0.50:
-        st.error("⚠️ Uncertain result. Please upload a clearer skin image.")
-    else:
-        st.markdown(f"### 🔍 Prediction: **{label_map[predicted_class]}**")
-        st.markdown(f"Confidence: `{confidence:.2f}`")
-    
-   
-   
-   
-   
+    # Show result
+    st.markdown(f"### 🔍 Prediction: **{label_map[predicted_class]}**")
+    st.markdown(f"Confidence: `{confidence:.2f}`")
+
+    if confidence < 0.70:
+        st.warning("⚠️ This result may be uncertain. Please consult a dermatologist.")
