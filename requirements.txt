@@ -2,4 +2,4 @@ streamlit
 tensorflow
 gdown
 pillow
-
+opencv-python
