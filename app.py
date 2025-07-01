@@ -1,7 +1,6 @@
 import streamlit as st
 import tensorflow as tf
 import numpy as np
-import cv2
 import gdown
 from PIL import Image
 import os
@@ -36,8 +35,8 @@ if uploaded_file:
     img = Image.open(uploaded_file).convert("RGB")
     st.image(img, caption='Uploaded Image', use_column_width=True)
 
-    img_array = np.array(img)
-    img_resized = cv2.resize(img_array, (224, 224)) / 255.0
+    img_resized = img.resize((224, 224))
+    img_array = np.array(img_resized) / 255.0
     img_input = np.expand_dims(img_resized, axis=0)
 
     prediction = model.predict(img_input)
