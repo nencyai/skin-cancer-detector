@@ -2,6 +2,5 @@ streamlit
 tensorflow
 gdown
 pillow
-opencv-python
 
 # force rebuild
