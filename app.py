@@ -8,16 +8,19 @@ import datetime
 
 # ------------------------
 # Function to check if it's a valid skin-like image
+
 def is_skin_image(img_array):
     """
-    Basic rule-based skin detector based on average color.
-    Blocks animals, cartoons, or random non-skin images.
+    Improved skin detection: returns True only if enough skin-like pixels are found.
     """
-    def is_skin_image(img_array):
-    avg_color = np.mean(img_array, axis=(0, 1))
-    if avg_color[0] < 200 and avg_color[1] < 200 and avg_color[2] < 200:
-        return True
-    return False
+    pixels = img_array.reshape(-1, 3)
+    skin_pixels = np.sum(
+        (pixels[:, 0] > 45) & (pixels[:, 0] < 255) &  # R
+        (pixels[:, 1] > 20) & (pixels[:, 1] < 220) &  # G
+        (pixels[:, 2] > 15) & (pixels[:, 2] < 200)    # B
+    )
+    skin_ratio = skin_pixels / len(pixels)
+    return skin_ratio > 0.15
 
     
 
