@@ -38,17 +38,20 @@ if uploaded_file:
     # Resize using PIL
     img_resized = img.resize((224, 224))
     img_array = np.array(img_resized) / 255.0
-    img_input = np.expand_dims(img_array, axis=0)
 
-    # Predict
-    raw_prediction = model.predict(img_input)
-    prediction = tf.nn.softmax(raw_prediction)
-    predicted_class = np.argmax(prediction)
-    confidence = np.max(prediction)
+    # 🔍 Skin image check BEFORE prediction
+    if not is_skin_image(img_array * 255):  # multiply to get back 0–255 range
+        st.error("🚫 This doesn't look like a skin image. Please upload a valid skin lesion image.")
+    else:
+        img_input = np.expand_dims(img_array, axis=0)
+        raw_prediction = model.predict(img_input)
+        prediction = tf.nn.softmax(raw_prediction)
+        predicted_class = np.argmax(prediction)
+        confidence = np.max(prediction)
 
-    # Show result
-    st.markdown(f"### 🔍 Prediction: **{label_map[predicted_class]}**")
-    st.markdown(f"Confidence: `{confidence:.2f}`")
+        # Show result
+        st.markdown(f"### 🔍 Prediction: **{label_map[predicted_class]}**")
+        st.markdown(f"Confidence: `{confidence:.2f}`")
 
-    if confidence < 0.70:
-        st.warning("⚠️ This result may be uncertain. Please consult a dermatologist.")
+        if confidence < 0.70:
+            st.warning("⚠️ This result may be uncertain. Please consult a dermatologist.")
