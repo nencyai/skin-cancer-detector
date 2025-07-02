@@ -13,10 +13,13 @@ def is_skin_image(img_array):
     Basic rule-based skin detector based on average color.
     Blocks animals, cartoons, or random non-skin images.
     """
+    def is_skin_image(img_array):
     avg_color = np.mean(img_array, axis=(0, 1))
-    if 30 < avg_color[0] < 240 and 30 < avg_color[1] < 200 and 30 < avg_color[2] < 200:
+    if avg_color[0] < 200 and avg_color[1] < 200 and avg_color[2] < 200:
         return True
     return False
+
+    
 
 # ------------------------
 # Function to log detected case to text file
